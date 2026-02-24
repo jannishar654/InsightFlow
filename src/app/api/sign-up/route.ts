@@ -8,7 +8,25 @@ export async function POST(request: Request) {
     await dbConnect();
 
     try{ // Note : Jab bhi data lena ho , toh await lagana hi lagana hai next.js me 
-        const { email, username, password } = await request.json();     
+        const { email, username, password } = await request.json()
+        const existingUserVerifiedByUsername= await UserModel.findOne({
+            username,
+            isVerified:true
+        })
+
+        if(existingUserVerifiedByUsername){
+            return Response.json(
+                {
+                    success:false ,
+                     message:'Username already exists'}, 
+                     {status:400   })
+        }
+
+        const existingUserByEmail= await UserModel.findOne({email})
+
+
+
+
 
     } catch(error){
         console.error("Error registering user ",error);
