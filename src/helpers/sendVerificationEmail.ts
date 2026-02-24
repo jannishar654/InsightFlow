@@ -14,7 +14,7 @@ export async function sendVerificationEmail(
         await resend.emails.send({
           from: 'onboarding@resend.dev',
           to: email,
-          subject: 'InsightFlow | Verification code',
+          subject: 'Mystery message| Verification code',
           react: VerificationEmail({username,otp:verifyCode}),
     });
         return {success:true , message:'Verification email send successfully'}
