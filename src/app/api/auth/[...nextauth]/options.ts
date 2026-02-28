@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 
 import dbConnect from "@/lib/dbConnect";
 
-export const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {  // Note : UI Bhi next auth bna leta hai 
     providers:[
         CredentialsProvider({   
             id: "credentials",
@@ -38,7 +38,7 @@ export const authOptions: NextAuthOptions = {
                     const isPasswordCorrect = await bcrypt.compare(credentials.password, user.password)
 
                     if(isPasswordCorrect){
-                        return user
+                        return user  // NOte return going to providers
                        
                     }else{
                         throw new Error("Invalid password")
@@ -51,5 +51,41 @@ export const authOptions: NextAuthOptions = {
                 }
             }    
         })
-    ] 
+    ],
+    callbacks:{
+        async jwt({token ,user}){
+            // making token powerful , since bydefault token has username and email but we want to add more info in token like id and isVerified
+
+            if(user){
+                token._id = user._id?.toString()  // since _id is an object we need to convert it to string
+                token.isVerified = user.isVerified
+                token.isAcceptingMessages = user.isAcceptingMessages
+                token.username = user.username
+            }
+
+            return token 
+        },
+        async session({session,token}){
+            if(token){
+                session.user._id = token._id
+                session.user.isVerified = token.isVerified
+                session.user.isAcceptingMessages = token.isAcceptingMessages
+                session.user.username = token.username
+            }
+            return session
+        
+        },
+
+    },
+    pages:{
+        //signIn:"/auth/signin", // It can be override
+        signIn:'/sign-in' , // we dont have to design the page saparately for this 
+
+    }, 
+    session:{
+        strategy:"jwt"
+    },
+    secret:process.env.NEXTAUTH_SECRET,
+
+    
 }        
