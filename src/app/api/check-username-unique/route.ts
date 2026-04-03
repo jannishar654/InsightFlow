@@ -7,7 +7,7 @@ import { usernameValidation } from "@/schemas/signUpSchema";
 
 
 const UsernameQuerySchema = z.object({
-    username: usernameValidation
+    username: usernameValidation  // username should be validated according to the same rules as in the sign-up schema, we can reuse the validation logic from there.
 })  
 
 export async function GET(request: Request) {
