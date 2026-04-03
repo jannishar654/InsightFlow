@@ -10,9 +10,8 @@ const UsernameQuerySchema = z.object({
     username: usernameValidation  // username should be validated according to the same rules as in the sign-up schema, we can reuse the validation logic from there.
 })  
 
-export async function GET(request: Request) {
+export async function GET(request: Request) {   
 
-   
     await dbConnect();  
     // url sample : http://localhost:3000/api/check-username-unique?username=johndoe?phone= ==... anything , any no. of paramaters 
 
