@@ -50,11 +50,21 @@ export async function GET(request: Request) {
         return Response.json(
                 {
                     success: true,
-                    messages: user[0].messages
+                    messages: user[0].messages // returning data as messages array, since aggregate returns an array of documents, and we are interested in the first document's messages field
                 },
                 {status: 200} 
             )
     } catch(error){
+
+        console.error("Error while fetching messages:", error);
+
+  return Response.json(
+    {
+      success: false,
+      message: "Failed to fetch messages"
+    },
+    { status: 500 }
+  );
 
     }
 
