@@ -11,7 +11,7 @@ export const authOptions: NextAuthOptions = {  // Note : UI Bhi next auth bna le
             id: "credentials",
             name: "Credentials",
             credentials: {
-                email: { label: "email", type: "text", placeholder: "Enter your email" },  
+                identifier: { label: "email", type: "text", placeholder: "Enter your email" },  
                 password: { label: "Password", type: "password", placeholder: "Enter your password" },
 
             },
@@ -22,8 +22,8 @@ export const authOptions: NextAuthOptions = {  // Note : UI Bhi next auth bna le
                 try{
                     const user =await UserModel.findOne({
                         $or:[
-                            {email:credentials.email},
-                            {username:credentials.password}
+                            {email:credentials.identifier},
+                            {username:credentials.identifier}
                         ]
                     })
 
