@@ -8,10 +8,13 @@ import UserModel from "@/model/User";
 
 import { User} from "next-auth"; 
 import mongoose from "mongoose";
+import { NextRequest } from "next/server";
 
 
-export async function DELETE(request: Request, {params}:{params:{messageid: string}}) {
-    const messageId = params.messageid; // frontend se URL ke through messageId mil jayega, usko params se extract karna hoga
+export async function DELETE( request: NextRequest,
+  context: { params: Promise<{ messageid: string }> }) {
+    const { messageid } = await context.params;
+    const messageId = messageid;
     await dbConnect();  
     const session = await getServerSession(authOptions)
     const user: User = session?.user as User // type assertion to treat session.user as a User object from next-auth, which should have the properties we need like email or id.
